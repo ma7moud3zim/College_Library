@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Menu extends javax.swing.JFrame {
     Boolean fBook = false , fAuthor = false, fPublisher = false, fSearch= false;
-    
+    int x,y;
     
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public Menu() {
@@ -73,7 +73,7 @@ public class Menu extends javax.swing.JFrame {
         UpdatingA1 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         PublisherPanel = new javax.swing.JPanel();
-        PCode = new javax.swing.JTextField();
+        PublisherCode = new javax.swing.JTextField();
         Pcity = new javax.swing.JTextField();
         Pnametext = new javax.swing.JTextField();
         Pphone = new javax.swing.JTextField();
@@ -106,6 +106,16 @@ public class Menu extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -457,7 +467,7 @@ public class Menu extends javax.swing.JFrame {
                 {null, null}
             },
             new String [] {
-                "BookID", "AuthorID"
+                "BookISBN", "AuthorID"
             }
         ));
         jScrollPane4.setViewportView(Trelation);
@@ -581,11 +591,11 @@ public class Menu extends javax.swing.JFrame {
 
         PublisherPanel.setBackground(new java.awt.Color(51, 153, 255));
 
-        PCode.setText("Code");
-        PCode.setToolTipText("");
-        PCode.addActionListener(new java.awt.event.ActionListener() {
+        PublisherCode.setText("Code");
+        PublisherCode.setToolTipText("");
+        PublisherCode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PCodeActionPerformed(evt);
+                PublisherCodeActionPerformed(evt);
             }
         });
 
@@ -695,7 +705,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGap(126, 126, 126))))
             .addGroup(PublisherPanelLayout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addComponent(PCode, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(PublisherCode, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Pnametext, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -709,7 +719,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(PublisherPanelLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(PublisherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PCode, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PublisherCode, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Pnametext, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Pcity, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Pphone, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1290,7 +1300,7 @@ public class Menu extends javax.swing.JFrame {
         try {      
           connection.ConecctToSQl();
          
-         String sql = " insert into Books values(? , ? , ? , ? , ?, ?  );";
+         String sql = " insert into Books values(? , ? , ? , ? , ?, ? );";
          PreparedStatement pstm = con.prepareStatement(sql);
          pstm.setInt(1 , Integer.parseInt(ISBNtext.getText() ));
          pstm.setString(2 , Titletext.getText());
@@ -1596,7 +1606,7 @@ public class Menu extends javax.swing.JFrame {
        
  try{
     ((DefaultTableModel)TBook.getModel()).setNumRows(0); 
-    connection.ConecctToSQl();
+     connection.ConecctToSQl();
       Statement stmt = con.createStatement();
          ResultSet rs = stmt.executeQuery("Select * from Books");
          
@@ -1615,15 +1625,10 @@ public class Menu extends javax.swing.JFrame {
             TBookModel.addRow(TbData);
        }
     con.close();    
-
  }
- catch ( SQLException e){ 
-     System.out.println("Error");
- }    
- 
- catch (ClassNotFoundException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+ catch ( SQLException | ClassNotFoundException e){ 
+            JOptionPane.showMessageDialog(null,e);
+ }
 
     }//GEN-LAST:event_ShowingActionPerformed
 
@@ -1752,9 +1757,9 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_LnameActionPerformed
 
-    private void PCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PCodeActionPerformed
+    private void PublisherCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PublisherCodeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PCodeActionPerformed
+    }//GEN-LAST:event_PublisherCodeActionPerformed
 
     private void InsertingPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InsertingPMouseClicked
         // TODO add your handling code here:
@@ -1766,7 +1771,7 @@ public class Menu extends javax.swing.JFrame {
          
          String sql = " insert into Publisher values(? , ? , ? , ? );";
          PreparedStatement pstm = con.prepareStatement(sql);
-         pstm.setInt(1 , Integer.parseInt(PCode.getText() ));
+         pstm.setInt(1 , Integer.parseInt(PublisherCode.getText() ));
          pstm.setString(2 , Pnametext.getText());
          pstm.setString(3 , Pcity.getText());
          pstm.setString(4 , Pphone.getText());
@@ -1804,7 +1809,7 @@ public class Menu extends javax.swing.JFrame {
          
          String sql = " update Publisher set Pname = ?, city =? , phone =?  where Pcode = ?";
          PreparedStatement pstm = con.prepareStatement(sql);
-         pstm.setInt(4 , Integer.parseInt(PCode.getText() ));
+         pstm.setInt(4 , Integer.parseInt(PublisherCode.getText() ));
          pstm.setString(1 , Pnametext.getText());
          pstm.setString(2 , Pcity.getText());
          pstm.setString(3 , Pphone.getText());
@@ -1831,11 +1836,13 @@ public class Menu extends javax.swing.JFrame {
    try {
             connection.ConecctToSQl();
             String sql = "Delete from Publisher where Pcode = ?;";
+
             PreparedStatement pstm = con.prepareStatement(sql);
-            pstm.setInt(1 , Integer.parseInt(PCode.getText()));
+            pstm.setInt(1 , Integer.parseInt(PublisherCode.getText()));
             
             pstm.executeUpdate();
             con.close();
+            
             JOptionPane.showMessageDialog(null, "Publisher Deleted Successfully");
 
             
@@ -1918,7 +1925,7 @@ public class Menu extends javax.swing.JFrame {
     con.close();    
 
  }
- catch ( SQLException | ClassNotFoundException e){ 
+ catch ( NumberFormatException | SQLException | ClassNotFoundException e){ 
            JOptionPane.showMessageDialog(null,e);
  }
     }//GEN-LAST:event_SearchingISBNActionPerformed
@@ -2046,6 +2053,20 @@ public class Menu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_UpdatingA1ActionPerformed
 
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        int xMouse = evt.getXOnScreen();
+        int yMouse = evt.getYOnScreen();
+        
+        this.setLocation(xMouse - x, yMouse - y);
+    }//GEN-LAST:event_formMouseDragged
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+      x = evt.getX();
+      y = evt.getY();
+        
+
+    }//GEN-LAST:event_formMousePressed
+
     
  
     public static void main(String args[]) {
@@ -2093,7 +2114,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextField Lname;
     private javax.swing.JPanel MainPage;
     private javax.swing.JPanel Menu;
-    private javax.swing.JTextField PCode;
     private javax.swing.JTextField P_Code;
     private javax.swing.JTextField Pagestext;
     private javax.swing.JTextField Pcity;
@@ -2101,6 +2121,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextField Pphone;
     private javax.swing.JTextField Pricetext;
     private java.awt.Panel Publisher;
+    private javax.swing.JTextField PublisherCode;
     private javax.swing.JPanel PublisherPanel;
     private java.awt.Panel SearchAbtBook;
     private javax.swing.JPanel SearchPanel;
