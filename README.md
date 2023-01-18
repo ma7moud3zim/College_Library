@@ -1,4 +1,4 @@
-# E-BookStoreProject
+# College_Library
 
 A simple library manager project with a gui that control a database system of Books and its authors.
 
